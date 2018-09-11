@@ -43,9 +43,11 @@ jsonList = '''{
   ]
 }'''
 
+
+
 parsed = json.loads(jsonList)
 
-
+# находим путь к ключу
 def find_keys(search_key, tree, path=tuple()):
     if isinstance(tree, list):
         for idx, el in enumerate(tree):
@@ -57,13 +59,14 @@ def find_keys(search_key, tree, path=tuple()):
         for k, v in tree.items():
             yield from find_keys(search_key, v, path+(k,))
 
+# находим значения ключа
 def retrieve(tree, path):
     for p in path:
         tree = tree[p]
     return tree
 
 result = list(find_keys("name", parsed))
-expected = [("powers", "age", "secretIdentity")]
 
+finded = [retrieve(parsed, result[i]) for i in range(len(result))]
 
-print(retrieve(parsed, result[0]))
+print(finded)
